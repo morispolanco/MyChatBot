@@ -29,11 +29,6 @@ st.title('Personal Tutoring Bot 🤖')
 
 
 
-#<div class="appview-container css-1wrcr25 e1g8pov66" data-testid="stAppViewContainer" data-layout="narrow">flex
-#data-testid="stAppViewContainer"
-
-
-
 st.markdown(
   '''
 
