@@ -4,7 +4,9 @@ from bardapi import Bard
 
 
 #function to generate the output
-token = 'XQhOfE1QzomWDToX7vJC_89NW-lCZi8TMN-amyZdpeRH2YgZyE8yVVWk3YyK_a2cEnr6uw.'
+
+# token is not to be shared 
+token = 'xxxx'
 st.session_state.something=''
 
 def generate_response(prompt):
