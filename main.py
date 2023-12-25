@@ -1,76 +1,61 @@
 import streamlit as st
 from streamlit_chat import message
 from bardapi import Bard
+import json
+
+with open('credentials.json', 'r') as f:
+    file = json.load(f)
+    token = file["token"]
 
 
-#function to generate the output
-
-# token is not to be shared 
-token = 'xxxx'
-st.session_state.something=''
-
+# Function to generate the output
 def generate_response(prompt):
-  bard=Bard(token=token)
-  response =bard.get_answer(prompt)['content']
-  return response
+    bard = Bard(token=token)
+    response = bard.get_answer(prompt)['content']
+    return response
 
 
-#Function to recieve user queries 
+# Function to receive user queries(input)
 def get_text():
-    input_text=st.text_input('Tutor Bot',placeholder="Write your text..",key='input' )
+    input_text = st.text_input("Hello", "", key='input')
     return input_text
 
-# with open('credentials.json', 'r') as f:
-#     file = json.load(f)
-#     token = file['token']
 
-#This is title for the app
-st.title('Personal Tutoring Bot 🤖')
+# Title of the streamlit app
+st.title('My ChatBOT!')
 
-
-
-st.markdown(
-  '''
-
+# to change the background of the chatbot UI page
+changes = '''
 <style>
-
 [data-testid="stAppViewContainer"]
-{
-    background-image:url('https://eskipaper.com/images/white-wallpaper-10.jpg');
-    background-size:cover;
-}
-
-iframe > body, iframe,div.esravye2, .css-97ja1j , .e13qjvis2  {
-        background-color: transparent !important;
-}
-.stTextInput{
-  position:sticky;
-  bottom:0;
-}
-
-
-
+    {
+    background-image:url("https://images.pexels.com/photos/6153354/pexels-photo-6153354.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+    background-position: 60% 40%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
 </style>
 '''
-
-  , unsafe_allow_html=True)
-
+st.markdown(changes, unsafe_allow_html=True)
 
 if 'generated' not in st.session_state:
-    st.session_state['generated']=[]
+    st.session_state['generated'] = []
 
 if 'past' not in st.session_state:
-    st.session_state['past']=[]
+    st.session_state['past'] = []
 
-#Accepting user input 
-user_input=get_text()
+# Accepting user input
+user_input = get_text()
 if user_input:
+    print(user_input)
     output = generate_response(user_input)
+    print(output)
     st.session_state.past.append(user_input)
     st.session_state.generated.append(output)
 
 if st.session_state['generated']:
-    for i in range (len(st.session_state['generated'])):
-        message(st.session_state['past'][i], key="user_"+str(i), is_user=True);
-        message(st.session_state['generated'][i], key=str(i));
-
+    # for loop is to print the chat in reverse order
+    for i in range(len(st.session_state['generated']) - 1, -1, -1):
+        # below syntax identify as every message as a unique key
+        message(st.session_state['generated'][i], key=str(i))
+        message(st.session_state['past'][i], key="user_" + str(i), is_user=True)
